@@ -9,7 +9,7 @@ import {
   verifyKeyMiddleware,
 } from "discord-interactions";
 import { getRandomEmoji, DiscordRequest } from "./utils.js";
-import { getShuffledOptions, getResult } from "./game.js";
+import { getShuffledOptions, getResult, getRPSChoices } from "./game.js";
 
 // Create an express app
 const app = express();
@@ -30,28 +30,58 @@ app.post(
   "/interactions",
   verifyKeyMiddleware(process.env.PUBLIC_KEY),
   (req, res) => {
+    console.log("INTERACTION RECEIVED:");
+    console.log(JSON.stringify(req.body, null, 2));
     const { type, data } = req.body;
 
-    // REQUIRED handshake
+    // PING (Discord handshake)
     if (type === 1) {
       return res.json({ type: 1 });
     }
 
     // Slash commands
     if (type === 2) {
-      if (data?.name === "test") {
+      const { name } = data;
+
+      if (name === "test") {
         return res.json({
           type: 4,
           data: {
-            content: "hello world 👋",
+            content: `hello world ${getRandomEmoji()}`,
           },
         });
       }
+      if (name === "challenge") {
+        try {
+          const choice = data?.options?.[0]?.value;
 
-      return res.json({
-        type: 4,
-        data: { content: "unknown command" },
-      });
+          const botChoice =
+            getRPSChoices()[Math.floor(Math.random() * getRPSChoices().length)];
+
+          const result = getResult(
+            { id: "user", objectName: choice },
+            { id: "bot", objectName: botChoice },
+          );
+
+          return res.json({
+            type: 4,
+            data: {
+              content: `You chose **${choice}**\nBot chose **${botChoice}**\n\n${result}`,
+            },
+          });
+        } catch (err) {
+          console.error("Challenge command error FULL:", err);
+
+          return res.json({
+            type: 4,
+            data: {
+              content: `⚠️ Error: ${err.message}`,
+            },
+          });
+        }
+        console.log("OPTIONS:", data?.options);
+        console.log("DATA:", data);
+      }
     }
 
     return res.sendStatus(200);

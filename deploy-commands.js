@@ -21,18 +21,21 @@ const TEST_COMMAND = {
 const CHALLENGE_COMMAND = {
   name: "challenge",
   description: "Play rock paper scissors",
+  type: 1,
+  integration_types: [0, 1],
+  contexts: [0, 1, 2],
   options: [
     {
       type: 3,
       name: "object",
-      description: "Pick your object",
+      description: "Pick rock, paper, or scissors",
       required: true,
-      choices: createCommandChoices(),
+      choices: getRPSChoices().map((c) => ({
+        name: capitalize(c),
+        value: c.toLowerCase(),
+      })),
     },
   ],
-  type: 1,
-  integration_types: [0, 1],
-  contexts: [0, 2],
 };
 
 const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND];
