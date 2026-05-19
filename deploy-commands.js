@@ -23,13 +23,13 @@ const DELAY_COMMAND = {
   type: 1,
   options: [
     {
-      type: 3, // STRING
+      type: 3,
       name: "hours",
       description: "Number of hours to wait",
       required: true,
     },
     {
-      type: 3, // STRING
+      type: 3,
       name: "message",
       description: "Message to send after the delay",
       required: true,
