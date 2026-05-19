@@ -30,30 +30,27 @@ app.post(
   "/interactions",
   verifyKeyMiddleware(process.env.PUBLIC_KEY),
   (req, res) => {
-    console.log("INTERACTION RECEIVED:");
-    console.log(JSON.stringify(req.body, null, 2));
-    const { type, data } = req.body;
+    try {
+      const { type, data } = req.body;
 
-    // PING (Discord handshake)
-    if (type === 1) {
-      return res.json({ type: 1 });
-    }
-
-    // Slash commands
-    if (type === 2) {
-      const { name } = data;
-
-      if (name === "test") {
-        return res.json({
-          type: 4,
-          data: {
-            content: `hello world ${getRandomEmoji()}`,
-          },
-        });
+      if (type === 1) {
+        return res.json({ type: 1 });
       }
-      if (name === "challenge") {
-        try {
-          const choice = data?.options?.[0]?.value;
+
+      if (type === 2) {
+        const name = data?.name;
+
+        if (name === "test") {
+          return res.json({
+            type: 4,
+            data: {
+              content: `hello world ${getRandomEmoji()}`,
+            },
+          });
+        }
+
+        if (name === "challenge") {
+          const choice = data?.options?.[0]?.value ?? "none";
 
           const botChoice =
             getRPSChoices()[Math.floor(Math.random() * getRPSChoices().length)];
@@ -69,22 +66,25 @@ app.post(
               content: `You chose **${choice}**\nBot chose **${botChoice}**\n\n${result}`,
             },
           });
-        } catch (err) {
-          console.error("Challenge command error FULL:", err);
-
-          return res.json({
-            type: 4,
-            data: {
-              content: `⚠️ Error: ${err.message}`,
-            },
-          });
         }
-        console.log("OPTIONS:", data?.options);
-        console.log("DATA:", data);
-      }
-    }
 
-    return res.sendStatus(200);
+        return res.json({
+          type: 4,
+          data: { content: "unknown command" },
+        });
+      }
+
+      return res.sendStatus(200);
+    } catch (err) {
+      console.error("GLOBAL INTERACTION ERROR:", err);
+
+      return res.json({
+        type: 4,
+        data: {
+          content: "⚠️ Internal error",
+        },
+      });
+    }
   },
 );
 
