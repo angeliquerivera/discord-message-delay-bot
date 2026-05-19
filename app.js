@@ -9,7 +9,6 @@ import {
   verifyKeyMiddleware,
 } from "discord-interactions";
 import { getRandomEmoji, DiscordRequest } from "./utils.js";
-import { getShuffledOptions, getResult, getRPSChoices } from "./game.js";
 
 // Create an express app
 const app = express();
@@ -45,25 +44,6 @@ app.post(
             type: 4,
             data: {
               content: `hello world ${getRandomEmoji()}`,
-            },
-          });
-        }
-
-        if (name === "challenge") {
-          const choice = data?.options?.[0]?.value ?? "none";
-
-          const botChoice =
-            getRPSChoices()[Math.floor(Math.random() * getRPSChoices().length)];
-
-          const result = getResult(
-            { id: "user", objectName: choice },
-            { id: "bot", objectName: botChoice },
-          );
-
-          return res.json({
-            type: 4,
-            data: {
-              content: `You chose **${choice}**\nBot chose **${botChoice}**\n\n${result}`,
             },
           });
         }
