@@ -1,8 +1,8 @@
 {
-  "name": "discord-getting-started",
+  "name": "discord-message-delay-bot",
   "private": true,
   "version": "1.0.0",
-  "description": "Discord example app",
+  "description": "Discord bot to set timer for messages to send or reminders to reply",
   "main": "app.js",
   "type": "module",
   "engines": {
