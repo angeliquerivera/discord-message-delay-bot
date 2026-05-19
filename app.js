@@ -48,6 +48,46 @@ app.post(
           });
         }
 
+        if (name === "delay") {
+          const hoursOption = data?.options?.find(
+            (o) => o.name === "hours",
+          )?.value;
+          const messageOption = data?.options?.find(
+            (o) => o.name === "message",
+          )?.value;
+
+          const hours = parseFloat(hoursOption);
+          const message = messageOption;
+
+          if (isNaN(hours) || hours <= 0) {
+            return res.json({
+              type: 4,
+              data: { content: "❌ Invalid number of hours. Must be > 0." },
+            });
+          }
+
+          res.json({
+            type: 4,
+            data: {
+              content: `⏳ Will send your message in ${hours} hour(s)...`,
+            },
+          });
+
+          const delayMs = hours * 60 * 60 * 1000;
+
+          setTimeout(async () => {
+            try {
+              await DiscordRequest({
+                method: "POST",
+                endpoint: `webhooks/${process.env.APP_ID}/${data?.token}`,
+                body: { content: message },
+              });
+            } catch (err) {
+              console.error("Error sending delayed message:", err);
+            }
+          }, delayMs);
+        }
+
         return res.json({
           type: 4,
           data: { content: "unknown command" },
