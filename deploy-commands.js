@@ -17,7 +17,27 @@ const TEST_COMMAND = {
   contexts: [0, 1, 2],
 };
 
-const ALL_COMMANDS = [TEST_COMMAND];
+const DELAY_COMMAND = {
+  name: "delay",
+  description: "Send a message after a delay (in hours)",
+  type: 1,
+  options: [
+    {
+      type: 3, // STRING
+      name: "hours",
+      description: "Number of hours to wait",
+      required: true,
+    },
+    {
+      type: 3, // STRING
+      name: "message",
+      description: "Message to send after the delay",
+      required: true,
+    },
+  ],
+};
+
+const ALL_COMMANDS = [TEST_COMMAND, DELAY_COMMAND];
 
 await InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
 
