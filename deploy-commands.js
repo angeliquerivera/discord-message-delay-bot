@@ -34,6 +34,7 @@ const REMIND_COMMAND = {
       required: false,
     },
   ],
+  dm_permission: true,
 };
 
 const DELAY_COMMAND = {
@@ -54,6 +55,7 @@ const DELAY_COMMAND = {
       required: true,
     },
   ],
+  dm_permission: true,
 };
 
 const ALL_COMMANDS = [REMIND_COMMAND, DELAY_COMMAND];
