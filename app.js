@@ -46,6 +46,30 @@ app.post(
 
       const name = data?.name;
 
+      client.on("interactionCreate", async (interaction) => {
+        if (!interaction.isChatInputCommand()) return;
+
+        if (interaction.commandName === "remind") {
+          const hours = interaction.options.getInteger("hours");
+          const customMessage =
+            interaction.options.getString("message") ||
+            "Hey! Reply to this message!";
+
+          const user = interaction.options.getUser("user");
+
+          await interaction.reply(
+            `Okay! I'll remind ${user.tag} in ${hours} hour(s).`,
+          );
+
+          setTimeout(
+            async () => {
+              await user.send(customMessage);
+            },
+            hours * 60 * 60 * 1000,
+          );
+        }
+      });
+
       if (name === "delay") {
         const hours = parseFloat(
           data.options.find((o) => o.name === "hours")?.value,

@@ -11,10 +11,29 @@ function createCommandChoices() {
 
 const REMIND_COMMAND = {
   name: "remind",
-  description: "Send a reminder message to reply to someone else's message",
+  description:
+    "Send a reminder message to reply to someone else's message later",
   type: 1,
-  integration_types: [0, 1],
-  contexts: [0, 1, 2],
+  options: [
+    {
+      name: "hours",
+      description: "How many hours to wait before reminding",
+      type: 4,
+      required: true,
+    },
+    {
+      name: "user",
+      description: "User to remind",
+      type: 6,
+      required: true,
+    },
+    {
+      name: "message",
+      description: "Custom reminder message",
+      type: 3,
+      required: false,
+    },
+  ],
 };
 
 const DELAY_COMMAND = {
@@ -37,7 +56,7 @@ const DELAY_COMMAND = {
   ],
 };
 
-const ALL_COMMANDS = [TEST_COMMAND, DELAY_COMMAND];
+const ALL_COMMANDS = [REMIND_COMMAND, DELAY_COMMAND];
 
 await InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
 
