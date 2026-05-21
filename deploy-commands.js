@@ -39,7 +39,7 @@ const REMIND_COMMAND = {
 
 const DELAY_COMMAND = {
   name: "delay",
-  description: "Send a message after a delay (in hours)",
+  description: "Send a typed out message at a later time",
   type: 1,
   options: [
     {
