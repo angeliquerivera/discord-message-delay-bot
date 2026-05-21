@@ -50,7 +50,9 @@ app.post(
         if (!interaction.isChatInputCommand()) return;
 
         if (interaction.commandName === "remind") {
-          const hours = interaction.options.getInteger("hours");
+          const hours = parseFloat(
+            data.options.find((o) => o.name === "hours")?.value,
+          );
           const customMessage =
             interaction.options.getString("message") ||
             "Hey! Reply to this message!";

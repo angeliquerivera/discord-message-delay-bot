@@ -18,7 +18,7 @@ const REMIND_COMMAND = {
     {
       name: "hours",
       description: "How many hours to wait before reminding",
-      type: 4,
+      type: 10,
       required: true,
     },
     {
@@ -42,7 +42,7 @@ const DELAY_COMMAND = {
   type: 1,
   options: [
     {
-      type: 3,
+      type: 10,
       name: "hours",
       description: "Number of hours to wait",
       required: true,
