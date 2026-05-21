@@ -9,9 +9,9 @@ function createCommandChoices() {
   }));
 }
 
-const TEST_COMMAND = {
-  name: "test",
-  description: "Basic command",
+const REMIND_COMMAND = {
+  name: "remind",
+  description: "Send a reminder message to reply to someone else's message",
   type: 1,
   integration_types: [0, 1],
   contexts: [0, 1, 2],

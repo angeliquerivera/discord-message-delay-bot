@@ -46,10 +46,6 @@ app.post(
 
       const name = data?.name;
 
-      if (name === "test") {
-        return reply(res, `hello world ${getRandomEmoji()}`);
-      }
-
       if (name === "delay") {
         const hours = parseFloat(
           data.options.find((o) => o.name === "hours")?.value,
